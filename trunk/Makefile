@@ -6,7 +6,7 @@
 
 CC = g++
 CFLAGS = -Wall -O2 -g
-LDFLAGS =
+LDFLAGS = 
 
 EXE = cm
 

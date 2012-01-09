@@ -17,7 +17,7 @@ INC_PATH = ./include/
 OBJ_PATH = ./obj/
 TEST_PATH = ./tests/
 
-OBJS = ${$(SRC_PATH)*.c*=.o}
+OBJS = ${$(SRC_PATH)*=.o}
 
 .SUFFIXES:
 

@@ -10,3 +10,39 @@
 #			B5-8 LAPRIII group
 #
 ################################################################################
+
+cc = gcc
+CFLAGS = -Wall -ansi -O3 -g
+LFLAGS =
+
+EXE_CONV = conv
+EXE_APP = app
+
+SRC_PATH = ./src/
+BIN_PATH = ./bin/
+INC_PATH = ./include/
+OBJ_PATH = ./obj/
+
+OBJS_CONV = conv.o
+OBJS_APP = app.o
+
+all: conv app
+
+conv.o:
+	$(cc) $(CFLAGS) -c conv.c -o $(OBJ_PATH)conv.o
+
+conv: conv.o
+	$(cc) $(LFLAGS) -o $(BIN_PATH)conv conv.o
+
+app.o:
+	$(cc) $(CFLAGS) -c app.c -o $(OBJ_PATH)app.o
+	
+app: app.o
+	$(cc) $(LFLAGS) -o $(BIN_PATH)app app.o
+	
+clean:
+
+	rm -f $(BIN_PATH)conv
+	rm -f $(BIN_PATH)app
+	rm -f $(OBJ_PATH)conv.o
+	rm -f $(OBJ_PATH)app.o

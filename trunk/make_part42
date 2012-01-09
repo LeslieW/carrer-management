@@ -12,7 +12,7 @@
 ################################################################################
 
 cc = gcc
-CFLAGS = -Wall -ansi -O3 -g
+CFLAGS = -Wall -O3 -g
 LFLAGS =
 
 EXE_CONV = conv
@@ -29,16 +29,16 @@ OBJS_APP = app.o
 all: conv app
 
 conv.o:
-	$(cc) $(CFLAGS) -c conv.c -o $(OBJ_PATH)conv.o
+	$(cc) $(CFLAGS) -I$(INC_PATH) -c $(SRC_PATH)conv.c -o $(OBJ_PATH)conv.o
 
 conv: conv.o
-	$(cc) $(LFLAGS) -o $(BIN_PATH)conv conv.o
+	$(cc) $(LFLAGS) -o $(BIN_PATH)conv $(OBJ_PATH)conv.o
 
 app.o:
-	$(cc) $(CFLAGS) -c app.c -o $(OBJ_PATH)app.o
+	$(cc) $(CFLAGS) -I$(INC_PATH) -c $(SRC_PATH)app.c -o $(OBJ_PATH)app.o
 	
 app: app.o
-	$(cc) $(LFLAGS) -o $(BIN_PATH)app app.o
+	$(cc) $(LFLAGS) -o $(BIN_PATH)app $(OBJ_PATH)app.o
 	
 clean:
 

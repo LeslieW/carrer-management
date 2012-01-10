@@ -23,25 +23,34 @@
 static const char *cat_delimiter = "->";	/* global category delimiter */
 
 #define MAX_CATEGORIES			32
-#define DELIMITER				';'
+#define DELIMITER				";"
+#define MAX_EMPLOYEE_NAME		256
 
 /**
  * The employee struct will hold a tokenized line from the CSV file.
  */
 typedef struct _employee
 {
-	unsigned int number;		/* number of the employee */
-	char *name;					/* name of the employee */
-	unsigned int categories;	/* categories flags */
+	unsigned int number;			/* number of the employee */
+	char name[MAX_EMPLOYEE_NAME];	/* name of the employee */
+	unsigned int categories;		/* categories flags */
 } employee;
+
+/**
+ * Loads and fills an employee data from a given CSV line,
+ * representing an employee.
+ *
+ * @param data the CSV line representing an employee [IN]
+ * @return an employee
+ */
+employee convLoadEmployee(char *data);
 
 /**
  * Reads a CSV file, using a given FILE handle.
  *
  * @param f the FILE handle [IN]
  * @param employeeList the array of employees to fill with the CSV data [OUT]
- * @return 0 if successfull, > 0 if internal error or < 0 if system
- * 		error (memory, permissions, etc...)
+ * @return < 0 if an error occurs, else returns the number of employees read
  */
 int convReadCSV(FILE *f, employee *employeeList);
 
@@ -50,9 +59,10 @@ int convReadCSV(FILE *f, employee *employeeList);
  *
  * @param f the FILE handle [IN]
  * @param employeeList the array of employees to serialize [IN]
+ * @param numEmployees the number of employees in the array [IN]
  * @return 0 if successfull, > 0 if internal error or < 0 if system
  * 		error (memory, permissions, etc...)
  */
-int convWriteBin(FILE *f, employee *employeeList);
+int convWriteBin(FILE *f, employee *employeeList, unsigned int numEmployees);
 
 #endif // _CONV_H_

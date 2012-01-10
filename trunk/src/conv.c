@@ -4,59 +4,139 @@
 
 #include "conv.h"
 
-#define MAX_EMPLOYEE_NAME	256
+#define INITIAL_EMPLOYEES	100		/* the initial size of the employee array */
+#define EMPLOYEE_INCREMENT	10		/* the number of employees to add, when the array reaches its boundaries */
 #define MAX_SIZEOF_LINE		(MAX_CATEGORIES * sizeof(int)) * MAX_EMPLOYEE_NAME * sizeof(int)
 
 int main(int argc, char **argv)
 {
-	// if (argc < 1)
+	// if (argc < 2)
 	// {
-	// 		printf("Not enough args. Usage: conv <CSV>"
+	// 		printf("Not enough args. Usage: conv <input_file> <output_file>"
 	//		exit(-1);
 	// }
 	// FILE *fin = fopen(argv[1]);
-	FILE *fin = fopen("../tests/funcionario.csv", "w");
-	long fileSize = 0;
+	FILE *fin = fopen("../tests/funcionario.csv", "r");
+	// FILE *fout = fopen(argv[2]);
+	FILE *fout = fopen("./out.bin", "w");
 	employee *employees = NULL;
-	char buff[MAX_SIZEOF_LINE] = "\0";
+	int numEmployees = INITIAL_EMPLOYEES;
 
-	if (!fin)
+	if (!fin || !fout)
 	{
 		printf("\nError while opening file\n");
 		return -1;
 	}
 
-	// obtain the number of lines in the file.
-	// this will be the number of employees.
-	fseek(fin, 0, SEEK_END);
-	fileSize = ftell(fin);
-	rewind(fin);
+	employees = (employee *) malloc(numEmployees * sizeof(employee));
 
-	// if file is empty, we shouldn't continue
-	if (!fileSize)
-	{
-		printf("\nFile is empty.\n");
-		fclose(fin);
-	}
+	numEmployees = convReadCSV(fin, employees);
 
-	employees = (employee *) malloc(fileSize * sizeof(employee));
+	convWriteBin(fout, employees, numEmployees);
 
-	while (fscanf(fin, "%s", buff) != EOF)
-	{
-		printf("%s\n", buff);
-
-		memset(buff, '\0', MAX_SIZEOF_LINE);
-	}
-
+	free(employees);
+	fclose(fin);
+	fclose(fout);
 	return 0;
+}
+
+employee convLoadEmployee(char *data)
+{
+	char *token = NULL;
+	employee ret;
+	memset(&ret, 0, sizeof(employee));
+
+	if (!data)
+	{
+		return ret;
+	}
+
+	// get the number of the employee
+	token = strtok(data, DELIMITER);
+	ret.number = atoi(token);
+
+	// get the name of the employee
+	token = strtok(NULL, DELIMITER);
+	strcpy(ret.name, token);
+
+	// build flag integer with past categories
+	token = strtok(NULL, DELIMITER);
+	while (token)
+	{
+		ret.categories |= atoi(token)	;
+		token = strtok(NULL, cat_delimiter);
+	}
+
+	return ret;
 }
 
 int convReadCSV(FILE *f, employee *employeeList)
 {
-	return 0;
+	char buff[MAX_SIZEOF_LINE] = "\0";
+	int i = 0;
+	employee tmp;
+	employee *tmpEmployees = NULL;
+
+	static unsigned int currNumberEmployees = INITIAL_EMPLOYEES;
+
+	while (fscanf(f, "%s", buff) != EOF)
+	{
+		// load employee from a CSV file line
+		tmp = convLoadEmployee(buff);
+
+		// check if the data was correct
+		if (tmp.number > 0 && tmp.name)
+		{
+			if (i >= currNumberEmployees)
+			{
+				tmpEmployees = realloc(employeeList, EMPLOYEE_INCREMENT);
+
+				// if no pointer is returned, there is no memory available
+				if (!tmpEmployees)
+				{
+					printf("\nFATAL ERROR adding employee: No memory available\n");
+					exit(-1);
+				}
+
+				// if the address is different from the original, a new
+				// address was allocated. We free the old one and point to
+				// the new one.
+				if (tmpEmployees != employeeList)
+				{
+					free(employeeList);
+					employeeList = tmpEmployees;
+				}
+			}
+
+			employeeList[i] = tmp;
+		}
+		else
+		{
+			printf("\nERROR while loading employee at line %d\n", i);
+		}
+
+		i++;
+		memset(buff, '\0', MAX_SIZEOF_LINE);
+	}
+
+	return i;
 }
 
-int convWriteBin(FILE *f, employee *employeeList)
+int convWriteBin(FILE *f, employee *employeeList, unsigned int numEmployees)
 {
+	int r = 0;	/* return value */
+
+	r = fwrite(employeeList, sizeof(employee), numEmployees, f);
+
+	/**
+	 * fwrite returns the number of elements written. If
+	 * it differs from numEmployees, an error occurred.
+	 */
+	if (r != numEmployees)
+	{
+		printf("\nERROR writing employees\n");
+		return -1;
+	}
+
 	return 0;
 }

@@ -34,7 +34,7 @@ all: $(EXE)
 $(EXE): $(OBJS)
 	$(CC) $(LDFLAGS) -o $(BIN_PATH)$@ $(OBJS)
 
-$(OBJS): $(INC_PATH)version.h
+$(OBJS): $(INC_PATH)includes.h
 
 clean:
 	rm -f $(BIN_PATH)*

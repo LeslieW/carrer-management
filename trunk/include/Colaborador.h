@@ -88,20 +88,20 @@ public:
 
     /*  section */
 
-    	/* set the employee into the employee @param*/
-        virtual Colaborador&    operator  = ( const Colaborador&);
+	/* set the employee into the employee @param*/
+	virtual Colaborador&    operator  = ( const Colaborador&);
 
-        /* test if the employee is the same as the employee @param based in email*/
-        virtual bool        	operator == ( const Colaborador&);
+	/* test if the employee is the same as the employee @param based in email*/
+	virtual bool        	operator == ( const Colaborador&);
 
-        /* test if the employee is the smaller as the employee @param based in salary*/
-        virtual bool        	operator <  ( const Colaborador&);
+	/* test if the employee is the smaller as the employee @param based in salary*/
+	virtual bool        	operator <  ( const Colaborador&);
 
-        /* test if the employee is the bigger as the employee @param based in salary*/
-        virtual bool        	operator >  ( const Colaborador&);
+	/* test if the employee is the bigger as the employee @param based in salary*/
+	virtual bool        	operator >  ( const Colaborador&);
 
-        /* set ostream @param whith the all personal information from employee*/
-        virtual void        	escreve(ostream& out)const;
+	/* set ostream @param whith the all personal information from employee*/
+	virtual void        	escreve(ostream& out)const;
 
 };
 }

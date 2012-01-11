@@ -10,22 +10,27 @@
 
 int main(int argc, char **argv)
 {
-	// if (argc < 2)
-	// {
-	// 		printf("Not enough args. Usage: conv <input_file> <output_file>"
-	//		exit(-1);
-	// }
-	// FILE *fin = fopen(argv[1]);
-	FILE *fin = fopen("../tests/funcionario.csv", "r");
-	// FILE *fout = fopen(argv[2]);
-	FILE *fout = fopen("./out.bin", "w");
-	employee *employees = NULL;
-	int numEmployees = INITIAL_EMPLOYEES;
+	FILE *fin = NULL;
+	FILE *fout = NULL;
+	employee *employees = NULL;				/* employee array */
+	int numEmployees = INITIAL_EMPLOYEES;	/* the number of employees loaded */
 
-	if (!fin || !fout)
+	// display the correct usage, if the arguments to the
+	// application are missing
+	if (argc < 2)
+	{
+		printf("\nNot enough args. Usage: conv <input_file> <output_file>\n");
+		exit(-1);
+	}
+	
+	// attempt to open the files
+	if (!(fin = fopen(argv[1], "r")) || !(fout = fopen(argv[2], "w")))
 	{
 		printf("\nError while opening file\n");
-		return -1;
+		
+		// with exit -1, no house keeping is needed, the OS
+		// will free the VA space of the whole process
+		exit(-1);
 	}
 
 	employees = (employee *) malloc(numEmployees * sizeof(employee));
@@ -34,6 +39,7 @@ int main(int argc, char **argv)
 
 	convWriteBin(fout, employees, numEmployees);
 
+	// house keeping
 	free(employees);
 	fclose(fin);
 	fclose(fout);
@@ -44,6 +50,8 @@ employee convLoadEmployee(char *data)
 {
 	char *token = NULL;
 	employee ret;
+	
+	// we initialize the employee to 0
 	memset(&ret, 0, sizeof(employee));
 
 	if (!data)
@@ -63,7 +71,11 @@ employee convLoadEmployee(char *data)
 	token = strtok(NULL, DELIMITER);
 	while (token)
 	{
-		ret.categories |= atoi(token)	;
+		// each bit represents a category. If a
+		// bit is active, that category belongs in
+		// the employee's career
+		ret.categories |= 1 << atoi(token);
+		
 		token = strtok(NULL, cat_delimiter);
 	}
 
@@ -75,9 +87,9 @@ int convReadCSV(FILE *f, employee *employeeList)
 	char buff[MAX_SIZEOF_LINE] = "\0";
 	int i = 0;
 	employee tmp;
-	employee *tmpEmployees = NULL;
+	employee *tmpEmployees = NULL;	/* auxiliary pointer used to reallocate the employee array */
 
-	static unsigned int currNumberEmployees = INITIAL_EMPLOYEES;
+	unsigned int currNumberEmployees = INITIAL_EMPLOYEES;
 
 	while (fscanf(f, "%s", buff) != EOF)
 	{
@@ -87,6 +99,7 @@ int convReadCSV(FILE *f, employee *employeeList)
 		// check if the data was correct
 		if (tmp.number > 0 && tmp.name)
 		{
+			// increase the array size if we reached the limit
 			if (i >= currNumberEmployees)
 			{
 				tmpEmployees = realloc(employeeList, EMPLOYEE_INCREMENT);

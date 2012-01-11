@@ -21,6 +21,7 @@ PDAD_HOME=`pwd`
 BIN_DIR=$PDAD_HOME
 INPUT_DIR=../tests
 OUTPUT_DIR=$PDAD_HOME
+SAVE_DIR=$OUTPUT_DIR
 LOG_FILE=$OUTPUT_DIR/pdad_log
 SLEEP=1
 
@@ -37,6 +38,8 @@ do
 		if [[ $RET -ne 0 ]]
 		then
 			echo "conv failed for file $file" >> pdad_log_`date +%Y%m%d_%H%M%S`
+		else
+			mv $file $SAVE_DIR
 		fi
 	done
 done

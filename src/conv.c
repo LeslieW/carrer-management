@@ -139,12 +139,23 @@ int convWriteBin(FILE *f, employee *employeeList, unsigned int numEmployees)
 {
 	int r = 0;	/* return value */
 
-	r = fwrite(employeeList, sizeof(employee), numEmployees, f);
+	// we write the number of employees as a header section
+	// in the file. This will ease the loading of data.
+	r = fwrite(&numEmployees, sizeof(unsigned int), 1, f);
 
 	/**
 	 * fwrite returns the number of elements written. If
-	 * it differs from numEmployees, an error occurred.
+	 * it differs from 1 (because we're writing only
+	 * one element in this situation), an error occurred.
 	 */
+	if (r != 1)
+	{
+		printf("\nERROR writing header section\n");
+		return -1;
+	}
+
+	r = fwrite(employeeList, sizeof(employee), numEmployees, f);
+
 	if (r != numEmployees)
 	{
 		printf("\nERROR writing employees\n");

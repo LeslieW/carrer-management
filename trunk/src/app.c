@@ -44,47 +44,53 @@ int main(int argc, char **argv)
 	employees = (employee *) malloc(numEmployees * sizeof(employee));
 	categories = (category *) malloc(MAX_CATEGORIES * sizeof(category));
 
-	while (i++ < numEmployees)
+	appReadBinFile(fin, employees, numEmployees);
+	fclose(fin);
+
+	for (; i < numEmployees; i++)
 	{
 		appLoadCategories(&employees[i], categories);
 
 		// print categories of employee
 		printf("\nemployee number %d, has the following categories:\n", employees[i].number);
-		while (j++ < MAX_CATEGORIES)
+		for (j = 0; j < MAX_CATEGORIES; j++)
 		{
-			printf("%d, ", categories[j]);
+			if (categories[j])
+				printf("%d, ", j);
 		}
 
 		appGetCurrentCategory(&employees[i], &tmpCategory);
 
 		// print current category
 		printf("\ncurrent category %d\n", tmpCategory);
-
+		 
 		appCountCategories(&employees[i], &count);
 
 		// print the number of categories of current employee
 		printf("\nnumber of categories of employee: %d\n", count);
-
+		/* 
 		appNumEmployeesInCategory(employees, tmpCategory, &count);
 
 		// print the number of employees in this employee's category
 		printf("\nnumber of employees in category %d: %d\n\n;;;;;;;;;;;;;;;;;;;;\n", tmpCategory, count);
+		*/
 
 		memset(categories, 0, MAX_CATEGORIES * sizeof(category));
 	}
 
 	// house keeping
-	free(employees);
-	free(categories);
-	fclose(fin);
+	if (employees)
+		free(employees);
+	//if (categories)
+		//free(categories);
 	return 0;
 }
 
-int appReadBinFile(FILE *f, employee *employeeList)
+int appReadBinFile(FILE *f, employee *employeeList, unsigned int numEmployees)
 {
 	int i = 0;
 
-	while (!feof(f))
+	while (!feof(f) && i < numEmployees)
 	{
 		if (fread(&employeeList[i++], sizeof(employee), 1, f) != 1)
 		{

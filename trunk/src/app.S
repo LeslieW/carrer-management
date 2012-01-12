@@ -183,3 +183,91 @@ appCountCategories:
 	movl %ebp, %esp
 	popl %ebp
 	ret
+	
+appNumEmployeesInCategory:
+	pushl %ebp
+	movl %esp, %ebp
+	pushl %eax		# ptr to first argument
+	pushl %ebx		# ptr to second argument
+	pushl %ecx		# ptr to third argument
+	pushl %edx		# ptr to fourth argument
+	pushl %edi		# counter
+	pushl %esi		# number of bytes to move/current employee category
+	
+	movl 8(%ebp), %eax
+	movl 12(%ebp), %ebx
+	movl 16(%ebp), %ecx
+	movl 20(%ebp), %edx
+	movl $0, %edi
+	movl max_employee_name, %esi
+	
+	# get to the categories field in the struct
+	addl $4, %esi
+	addl %esi, %eax
+
+	movl (%eax), %edx
+	
+	start_f4_1:
+		cmpl %edi, %ebx
+		jle end_f4_1
+		
+		# we must reutilize some additional
+		# registers
+		movl $0, %eax
+		movl $0, %ebx
+		
+		start_f4_2:
+			cmpl max_categories, %eax
+			jge end_f4_2
+			
+			movl %edx, %ebx
+			andl $0x00000001, %ebx
+			shrl $1, %edx
+			
+			# check if we're on the category we want
+			cmpl $0, %ebx
+			je cont_f4_2
+			cmpl %ecx, %ebx
+			jne cont_f4_2
+			
+			# get back the category counter and increment
+			movl 20(%ebp), %ebx
+			addl %eax, (%ebx)
+			
+			# if this employee is in this category,
+			# we go on to the next one
+			jmp end_f4_f2
+			
+			cont_f4_2:
+			incl %eax
+		
+		jmp start_f4_2
+		end_f4_f2:
+		
+		# get the first argument again
+		movl 8(%ebp), %eax
+		
+		# get the second argument again
+		movl 12(%ebp), %ebx
+		
+		# increment the employee array counter
+		incl %edi
+		
+		# point %eax to the next employee
+		movl $4, %esi
+		addl max_exmployee_name, %esi
+		mull %edi, %esi
+		addl %esi, %eax
+		movl (%eax), %edx
+	
+	jmp start_f4_1
+	end_f4_1:
+	
+	popl %esi
+	popl %edi
+	popl %edx
+	popl %ecx
+	popl %ebx
+	movl %ebp, %esp
+	popl %ebp
+	ret

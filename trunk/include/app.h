@@ -65,9 +65,10 @@ void appCountCategories(void *employee, int *count);
  * Counts the number of employees in a given category.
  *
  * @param employees the array of employee data [IN]
+ * @param numEmployees the number of employees [IN]
  * @param _category the category to filter the employees [IN]
  * @param count the count of employees in the category [OUT]
  */
-void appNumEmployeesInCategory(void **employees, category _category, int *count);
+void appNumEmployeesInCategory(void **employees, unsigned int numEmployees, category _category, int *count);
 
 #endif /* _APP_H_ */

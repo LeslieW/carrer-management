@@ -23,16 +23,18 @@
 typedef unsigned int category;
 
 // for use in the assembly modules
-static const int max_categories = MAX_CATEGORIES;
+const int max_employee_name = MAX_EMPLOYEE_NAME;
+const int max_categories = MAX_CATEGORIES;
 
 /**
  * Loads the data from the binary into an array of employees.
  *
  * @param f the file to read from [IN]
  * @param employeeList the array of employees to load into [OUT]
+ * @param numEmployees the number of employees [IN]
  * @return < 0 for errors, >= 0 if successful
  */
-int appReadBinFile(FILE *f, employee *employeeList);
+int appReadBinFile(FILE *f, employee *employeeList, unsigned int numEmployees);
 
 /**
  * Loads the categories from an employee into an array

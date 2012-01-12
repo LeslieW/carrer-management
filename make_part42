@@ -23,9 +23,6 @@ BIN_PATH = ./bin/
 INC_PATH = ./include/
 OBJ_PATH = ./obj/
 
-OBJS_CONV = conv.o
-OBJS_APP = app.o
-
 all: conv app
 
 conv.o:
@@ -34,11 +31,14 @@ conv.o:
 conv: conv.o
 	$(cc) $(LFLAGS) -o $(BIN_PATH)conv $(OBJ_PATH)conv.o
 
-app.o:
-	$(cc) $(CFLAGS) -I$(INC_PATH) -c $(SRC_PATH)app.c -o $(OBJ_PATH)app.o
+app_main.o:
+	$(cc) $(CFLAGS) -I$(INC_PATH) -c $(SRC_PATH)app.c -o $(OBJ_PATH)app_main.o
 	
-app: app.o
-	$(cc) $(LFLAGS) -o $(BIN_PATH)app $(OBJ_PATH)app.o
+app.o:
+	$(cc) $(CFLAGS) -I$(INC_PATH) -c $(SRC_PATH)app.S -o $(OBJ_PATH)app.o
+
+app: app_main.o app.o
+	$(cc) $(LFLAGS) -o $(BIN_PATH)app $(OBJ_PATH)app_main.o $(OBJ_PATH)app.o
 	
 clean:
 

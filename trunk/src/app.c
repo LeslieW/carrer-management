@@ -68,8 +68,9 @@ int main(int argc, char **argv)
 
 		// print the number of categories of current employee
 		printf("\nnumber of categories of employee: %d\n", count);
-		 
-		appNumEmployeesInCategory(employees, tmpCategory, &count);
+
+		count = 0;
+		appNumEmployeesInCategory(employees, numEmployees, tmpCategory, &count);
 
 		// print the number of employees in this employee's category
 		printf("\nnumber of employees in category %d: %d\n\n;;;;;;;;;;;;;;;;;;;;\n", tmpCategory, count);

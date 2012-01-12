@@ -32,7 +32,8 @@ do
 	file_list=`ls $INPUT_DIR/*.csv`
 	for file in $file_list
 	do
-		$BIN_DIR/conv $file $file_`date +%Y-%m-%d`.bin
+		out_file=$OUTPUT_DIR/$file_`date +%Y-%m-%d`.bin
+		$BIN_DIR/conv $file $out_file
 		RET=$?
 		
 		if [[ $RET -ne 0 ]]
@@ -40,6 +41,14 @@ do
 			echo "conv failed for file $file" >> pdad_log_`date +%Y%m%d_%H%M%S`
 		else
 			mv $file $SAVE_DIR
+		fi
+		
+		$BIN_DIR/app $out_file
+		RET=$?
+		
+		if [[ $RET -ne 0 ]]
+		then
+			echo "app failed for file $out_file" >> pdad_log_`date +%Y%m%d_%H%M%S`
 		fi
 	done
 done

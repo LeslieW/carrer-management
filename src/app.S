@@ -198,7 +198,7 @@ appNumEmployeesInCategory:
 	movl 12(%ebp), %ebx
 	movl 16(%ebp), %ecx
 	movl 20(%ebp), %edx
-	movl $0, %edi
+	movl $1, %edi
 	movl max_employee_name, %esi
 	
 	# get to the categories field in the struct
@@ -206,19 +206,19 @@ appNumEmployeesInCategory:
 	addl %esi, %eax
 
 	movl (%eax), %edx
-	
+
 	start_f4_1:
-		cmpl %edi, %ebx
-		jle end_f4_1
+		cmpl %ebx, %edi
+		jg end_f4_1
 		
 		# we must reutilize some additional
 		# registers
-		movl $0, %eax
+		movl $0, %ecx
 		movl $0, %ebx
 		
 		start_f4_2:
-			cmpl max_categories, %eax
-			jge end_f4_2
+			cmpl max_categories, %ecx
+			jge end_f4_f2
 			
 			movl %edx, %ebx
 			andl $0x00000001, %ebx
@@ -227,36 +227,35 @@ appNumEmployeesInCategory:
 			# check if we're on the category we want
 			cmpl $0, %ebx
 			je cont_f4_2
-			cmpl %ecx, %ebx
+			cmpl 16(%ebp), %ecx
 			jne cont_f4_2
 			
 			# get back the category counter and increment
 			movl 20(%ebp), %ebx
-			addl %eax, (%ebx)
+			addl $1, (%ebx)
 			
-			# if this employee is in this category,
+
+			# ifthis employee is in this category,
 			# we go on to the next one
 			jmp end_f4_f2
 			
 			cont_f4_2:
-			incl %eax
+			incl %ecx
 		
 		jmp start_f4_2
 		end_f4_f2:
 		
-		# get the first argument again
-		movl 8(%ebp), %eax
-		
+		# increment the employee array counter
+		incl %edi
+
 		# get the second argument again
 		movl 12(%ebp), %ebx
 		
-		# increment the employee array counter
-		incl %edi
-		
 		# point %eax to the next employee
 		movl $4, %esi
-		addl max_exmployee_name, %esi
-		mull %edi, %esi
+		addl max_employee_name, %esi
+		#imull %edi, %esi
+		addl $4, %esi
 		addl %esi, %eax
 		movl (%eax), %edx
 	

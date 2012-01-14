@@ -13,31 +13,33 @@
  *
  *****************************************************************************/
 
-#ifndef RH_H_
-#define RH_H_
+#ifndef _RH_H_
+#define _RH_H_
 
 #include <iostream>
 #include <string>
-using namespace std;
 
-using namespace col;
 #include "Colaborador.h"
 
-class RH: public Colaborador {
-private:
+using std::string;
+using dmd::Colaborador;
 
+namespace dmd
+{
+
+class RH : public Colaborador
+{
 public:
-	/**   Constructor section */
-	/* default Constructor of the employee */
-					RH();
-	 /* full  Constructor of the employee */
-					RH(const string& name, const string& adress, const string& email,const string& password, int nif, int phone, double salary);
-	 /* copy  Constructor of the employee */
-					RH(const RH&);
-	 /* delete employee */
-					~Colaborador();
- */
-	/*	 *   end Constructor section	 */
+	RH();
+
+	RH(const string& name, const string& adress, const string& email, const string& password,
+		int nif, int phone, double salary);
+
+	RH(const RH&);
+
+	~RH();
 };
 
-#endif
+}
+
+#endif /* _RH_H */

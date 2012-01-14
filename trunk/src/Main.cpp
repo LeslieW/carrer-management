@@ -1,6 +1,8 @@
 /******************************************************************************
  *
- *	includes.h
+ *	Colaborador.cpp
+ *
+ *	Development file for Colaborador class
  *
  *	Created at:
  *	2012-01-10
@@ -10,10 +12,20 @@
  *		B5-8 LAPRIII group
  *
  *****************************************************************************/
-#ifndef _INCLUDES_H
-#define _INCLUDES_H
+#include <string>
+#include <sstream>
+#include <iostream>
+#include <list>
+using namespace std;
 
 #include "Colaborador.h"
-#include "RH.h"
 
-#endif /* _INCLUDES_H */
+int main()
+{
+	cout <<"teste";
+	return 1;
+}
+
+
+
+

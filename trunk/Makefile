@@ -6,8 +6,8 @@
 
 cc = gcc
 CC = g++
-CFLAGS = -Wall -ansi -O3 -g
-LDFLAGS = -locci
+CFLAGS = -Wall -g
+LDFLAGS = -lociei
 
 EXE = cm
 
@@ -17,22 +17,33 @@ INC_PATH = ./include/
 OBJ_PATH = ./obj/
 TEST_PATH = ./tests/
 
-OBJS = ${$(SRC_PATH)*.cpp=.o}
+SRCS = $(shell find $(SRC_PATH) -type f -name "*.cpp")
+OBJS = ${SRCS:.cpp=.o}
 
-.SUFFIXES:
-
-.SUFFIXES: .o .cpp .c
-
-.c.o:
-	$(cc) $(CFLAGS) -I$(INC_PATH) -c $< -o $(OBJ_PATH)$<.o
+.SUFFIXES : .cpp .o
 
 .cpp.o:
-	$(CC) $(CFLAGS) -I$(INC_PATH) -c $< -o $(OBJ_PATH)$<.o
+	@echo "** Compilling $@ **" 
+	@echo ""
+	$(CC) $(CFLAGS) -I$(INC_PATH) -c $< -o $@
+	@echo ""
 
 all: $(EXE)
+	@echo "------------------------"
+	@echo "Compilling $(EXE)"
+	@echo "------------------------"
+	@echo ""
 	
 $(EXE): $(OBJS)
+	@echo "------------------------"
+	@echo "Linking..."
+	@echo "------------------------"
+	@echo ""
+		
 	$(CC) $(LDFLAGS) -o $(BIN_PATH)$@ $(OBJS)
+	mv $(SRC_PATH)*.o $(OBJ_PATH)
+	@echo ""
+	@echo "** DONE! :)"
 
 $(OBJS): $(INC_PATH)includes.h
 

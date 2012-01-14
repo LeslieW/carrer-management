@@ -15,29 +15,25 @@
 #include <string>
 #include <sstream>
 #include <iostream>
-#include <list>
 
-using namespace std;
-using namespace col;
 #include "Colaborador.h"
 #include "RH.h"
 
-RH::RH()
-:Colaborador()
-{
-}
+using std::string;
+using dmd::Colaborador;
+using dmd::RH;
+
+RH::RH() : Colaborador()
+{}
 
 RH::RH(const string& name, const string& adress, const string& email, const string& password, int nif, int phone, double salary)
-:Colaborador(name, adress, email, password, nif, phone, salary)
-{
-}
+	: Colaborador(name, adress, email, password, nif, phone, salary)
+{}
 
 RH::RH(const RH& copy)
-:Colaborador(copy)
-{
-}
+	: Colaborador(copy)
+{}
 
 RH::~RH()
-{
-}
+{}
 

@@ -13,99 +13,98 @@
  *
  *****************************************************************************/
 
-#ifndef COLABORADOR_H_
-#define COLABORADOR_H_
-#include <string>
-#include <sstream>
+#ifndef _COLABORADOR_H_
+#define _COLABORADOR_H_
+
 #include <iostream>
-#include <list>
+#include <sstream>
+#include <string>
 
-using namespace std;
-namespace col {
-/*
- *
- */
+namespace dmd
+{
 
+using std::string;
+using std::ostream;
 
-class Colaborador {
+class Colaborador
+{
 protected:
-	/*Personal information of the employee*/
-    string      		name,				/* name of the employee */
-    					adress,				/* adress of the employee */
-    					password,			/* password of the employee */
-    					email;				/* email of the employee */
+    string name;		/* name of the employee */
+    string address;		/* address of the employee */
+    string password;	/* password of the employee */
+    string email;		/* email of the employee */
 
-    int					nif,				/* nif of the employee */
-    					phone;				/* phone number of the employee */
-    double				salary;				/* Salary of the employee */
-   // list<acess>			permicoes;
+    int	nif;			/* nif of the employee */
+    int phone;			/* phone number of the employee */
+    double salary;		/* Salary of the employee */
 
 public:
-    /*
-     *   Constructor section
-     */
-    					Colaborador();					/* default Constructor of the employee */
-    					Colaborador(const string& name,
-    								const string& adress,
-    								const string& email,
-    								const string& password,
-    								int   nif,
-    								int   phone,
-    								double salary);		/* full  Constructor of the employee */
-    					Colaborador(const Colaborador&);/* copy  Constructor of the employee */
-    					~Colaborador();					/* destroyer of the employee */
-    virtual Colaborador*clone() const;					/* clone of the employee */
-    /*
-     *   end Constructor section
-     */
 
-    /*
-	*Access section
-	*/
-    //get's
-    virtual string 		getName()const;					/* return the name of the employee */
-    virtual string 		getAdress()const;				/* return the adress of the employee */
-    virtual string 		getEmail()const;				/* return the Email of the employee */
-    virtual string 		getPassword()const;				/* return the password of the employee */
-    virtual int 		getNIF()const;					/* return the NIF of the employee */
-    virtual int 		getPhone()const;				/* return the phone number of the employee */
-    virtual double 		getSalary()const;				/* return the salary number of the employee */
-    //virtual list<algo>*	getGroup()const;				/* return the access group number of the employee */
+    Colaborador();
 
-    //set's
-    virtual void 		setName		(const string& );	/* set the name of the employee */
-    virtual void 		setAdress	(const string& );	/* set the adress of the employee */
-    virtual void 		setEmail	(const string& );	/* set the Email of the employee */
-    virtual void 		setPassword	(const string& );	/* set the password of the employee */
-    virtual void 		setNIF		(int );				/* set the NIF of the employee */
-    virtual void 		setPhone	(int);				/* set the phone number of the employee */
-    virtual void 		setSalary	(double);			/* set the salary number of the employee */
-    //virtual void		getGroup	(list<algo> );		/* set the access group number of the employee */
-    /*
-     *   END of Access section
-     */
+	Colaborador(const string& _name, const string& _adress, const string& _email, const string& _password,
+			int _nif, int _phone, double _salary);
 
+	Colaborador(const Colaborador&);
 
-    /*  section */
+	virtual ~Colaborador();
 
-	/* set the employee into the employee @param*/
-	virtual Colaborador&    operator  = ( const Colaborador&);
+	/**
+	 * Returns a perfect copy of the Colaborador.
+	 *
+	 * @return a copy of Colaborador
+	 */
+    virtual Colaborador *clone() const;
+
+    // GETTERS
+    const std::string& getName() const { return this->name; }
+    const string& getAddress() const { return this->address; }
+    const string& getEmail() const { return this->email; }
+    const string& getPassword() const { return this->password; }
+    int getNIF() const { return this->nif; }
+    int getPhone() const { return this->phone; }
+    double getSalary() const { return this->salary; }
+
+    // SETTERS
+    void setName(const string&);
+    void setAdress(const string&);
+    void setEmail(const string&);
+    void setPassword(const string&);
+    void setNIF(int);
+    void setPhone(int);
+    void setSalary(double);
+
+	Colaborador& operator =(const Colaborador&);
 
 	/* test if the employee is the same as the employee @param based in email*/
-	virtual bool        	operator == ( const Colaborador&);
+	/**
+	 * Tests if this Colaborador is equal to Colaborador "c", based in their
+	 * email.
+	 *
+	 * @param c a Colaborador to check with
+	 * @return true if they're equal, false otherwise
+	 */
+	bool operator ==(const Colaborador &c);
 
-	/* test if the employee is the smaller as the employee @param based in salary*/
-	virtual bool        	operator <  ( const Colaborador&);
-
-	/* test if the employee is the bigger as the employee @param based in salary*/
-	virtual bool        	operator >  ( const Colaborador&);
-
-	/* set ostream @param whith the all personal information from employee*/
-	virtual void        	escreve(ostream& out)const;
-
+	/**
+	 * Writes the Colaboradar data to the output stream.
+	 *
+	 * @param out the output stream
+	 */
+	void write(ostream& out) const;
 };
-}
-/* return ostream @param whith the all personal information from employee*/
-ostream& operator <<(ostream &out, const Colaborador &p);
 
-#endif /* COLABORADOR_H_ */
+}
+
+/**
+ * Operator << overload to allow a Colaborador to be outputted
+ * to the output stream (ostream).
+ *
+ * @param out the output stream to write into
+ * @param c the Colaborador to use
+ *
+ * @return the ostream with the Colaborador data
+ */
+std::ostream& operator <<(std::ostream &out, const dmd::Colaborador &c);
+
+#endif /* _COLABORADOR_H_ */

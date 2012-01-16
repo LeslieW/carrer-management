@@ -23,6 +23,8 @@
 namespace dmd
 {
 
+typedef unsigned int ColaboradorId;
+
 using std::string;
 using std::ostream;
 

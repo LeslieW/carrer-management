@@ -21,13 +21,33 @@
 #include <iostream>
 #include <string>
 #include <list>
+#include <exception>
 
 #include <occi.h>
+
+#include <boost/graph/adjacency_list.hpp>
 
 #include "Colaborador.h"
 
 namespace core
 {
+
+class DataAccessException : public std::exception
+{
+private:
+    std::string message;
+    std::string sqlError;
+
+public:
+    DataAccessException(const std::string &msg,
+                        const std::string &error) : std::exception(), message(msg), sqlError(error) {}
+
+    const char* what() { return message.c_str(); }
+
+    const std::string& getSqlError() { return sqlError; }
+
+
+};
 
 class DataAccessLayer
 {
@@ -36,12 +56,20 @@ private:
     static const std::string DEF_PASS = "cjrrs";
     static const std::string DEF_CONN = "gandalf.isep.ipp.pt:1521/isepdb";
 
-    DataAccessLayer *instance;
+    static DataAccessLayer *instance;
     oracle::occi::Environment *environment;
     oracle::occi::Connection *connection;
 
+    void connect(const std::string &user = DEF_USER,
+                const std::string &pass = DEF_PASS,
+                const std::string &conn = DEF_CONN);
+
 public:
-    static const DataAccessLayer* getInstance();
+
+
+    static DataAccessLayer* getInstance();
+
+    ~DataAccessLayer();
 
     /**
      * Returns an instance of a Colaborador if it is found. If not,
@@ -63,6 +91,91 @@ public:
      * @throws a DataAccessException if the colaborador can't be found
      */
     std::list<dmd::Operacao> getAllowedOperacoes(dmd::ColaboradorId id);
+
+    /**
+     * Obtains all Beneficio currently active.
+     *
+     * @returns a list of active Beneficio
+     */
+    std::list<dmd::Beneficio> getBeneficios();
+
+    /**
+     * Obtains the PlanoBeneficios for a given Colaborador.
+     *
+     * @param id the ID of the Colaborador
+     * @returns the PlanoBeneficios for a Colaborador
+     * @throws a DataAccessException if the colaborador can't be found
+     */
+    dmd::PlanoBeneficios getBeneficios(dmd::ColaboradorId id);
+
+    /**
+     * Submits a PropostaProgressao to the system, for avaliation
+     * by the competent entities.
+     *
+     * @param proposta the PropostaProgressao to submit
+     * @throws a DataAccessException if it doesn't meet the progression
+     * criteria
+     */
+    void submitPropostaProgressao(const dmd::PropostaProgressao &proposta);
+
+    /**
+     * Submits a PlanoBeneficios to the system, for avaliation
+     * by the competent entities.
+     *
+     * @param plano the PlanoBeneficios to submit
+     * @throws a DataAccessException if it's rejected by the system
+     */
+    void submitPropostaPlanoBeneficios(const dmd::PlanoBeneficios &plano);
+
+    /**
+     * Obtains a list of Categoria for a given Colaborador.
+     *
+     * @param id the of the Colaborador
+     * @returns a list of Categoria
+     * @throws a DataAccessException if the colaborador can't be found
+     */
+    std::list<dmd::Categoria> getCategorias(dmd::ColaboradorId id);
+
+    /**
+     * Submits DadosPessoais proposal to the system, for evaluation
+     * by the competent entities.
+     *
+     * @param plano the DadosPessoais to submit
+     */
+    void submitPropostaDadosPessoais(const dmd::PropostaDadosPessoais &proposta);
+
+    /**
+     * Get the career (graph form) for a Colaborador.
+     *
+     * @param id the ID of the Colaborador
+     * @returns the graph representing the career he has taken
+     */
+    CareerGraph getCareer(dmd::ColaboradorId id);
+
+    /**
+     * Allows an authority entity to approve a Progressao.
+     *
+     * @param progressao the progressao to approve
+     * @throws DataAccessException if the progressao isn't found
+     */
+    void approveProgressao(const dmd::Progressao &progressao);
+
+    /**
+     * Imports an employee CSV data file into the DB.
+     *
+     * @param pathToFile the path to the CSV file
+     * @throws DataAccessException if the file can't be
+     * open/found or the user has no permissions to read
+     */
+    void importCSV(const std::string &pathToFile);
+
+    /**
+     * Exports all employee data into a CSV data file.
+     *
+     * @param pathToFile the path to destiny file
+     * @throws DataAccessException
+     */
+    void exportCSV(const std::string &pathToFile);
 };
 
 }

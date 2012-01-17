@@ -55,6 +55,11 @@ Colaborador* Colaborador::clone() const
 	return new Colaborador(*this);
 }
 
+void Colaborador::setId(ColaboradorId id)
+{
+    this->id = id;
+}
+
 void Colaborador::setName(const string& name)
 {
 	this->name = name;

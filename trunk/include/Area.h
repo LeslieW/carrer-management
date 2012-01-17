@@ -13,32 +13,34 @@
  *
  *****************************************************************************/
 
-#ifndef Area_H_
-#define Area_H_
+#ifndef _AREA_H_
+#define _AREA_H_
 
 #include <iostream>
 #include <string>
-using namespace std;
 
+namespace dmd
+{
 
-class Area {
+class Area
+{
 private:
-
-	string		description,
-				name;
+    std::string description;
+    std::string name;
 
 public:
-	/**   Constructor section */
-	/* default Constructor */
-					Area();
-	 /* full  Constructor  */
-					Area(const string& name, const string& description);
-	 /* copy  Constructor*/
-					Area(const Area&);
-	 /* delete employee */
-					~Area();
+    Area();
 
-	/*	 *   end Constructor section	 */
+    Area(const std::string &desc, const std::string &n) :
+            description(desc), name(n) {}
+
+    const std::string& getDescription() const { return description; }
+    const std::string& getName() const { return name; }
+
+    void setDescription(const std::string &desc) { description = desc; }
+    void setName(const std::string &_name) { name = _name; }
 };
+
+}
 
 #endif

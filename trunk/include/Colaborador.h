@@ -31,6 +31,7 @@ using std::ostream;
 class Colaborador
 {
 protected:
+    ColaboradorId id;           /* the ID of the Colaborador */
     string name;		/* name of the employee */
     string address;		/* address of the employee */
     string password;	/* password of the employee */
@@ -44,21 +45,21 @@ public:
 
     Colaborador();
 
-	Colaborador(const string& _name, const string& _adress, const string& _email, const string& _password,
-			int _nif, int _phone, double _salary);
+    Colaborador(const string& _name, const string& _adress, const string& _email, const string& _password, int _nif, int _phone, double _salary);
 
-	Colaborador(const Colaborador&);
+    Colaborador(const Colaborador&);
 
-	virtual ~Colaborador();
+    virtual ~Colaborador();
 
-	/**
-	 * Returns a perfect copy of the Colaborador.
-	 *
-	 * @return a copy of Colaborador
-	 */
+    /**
+     * Returns a perfect copy of the Colaborador.
+     *
+     * @return a copy of Colaborador
+     */
     virtual Colaborador *clone() const;
 
     // GETTERS
+    const ColaboradorId getId() const { return this->id; }
     const std::string& getName() const { return this->name; }
     const string& getAddress() const { return this->address; }
     const string& getEmail() const { return this->email; }
@@ -68,6 +69,7 @@ public:
     double getSalary() const { return this->salary; }
 
     // SETTERS
+    void setId(ColaboradorId id);
     void setName(const string&);
     void setAdress(const string&);
     void setEmail(const string&);

@@ -14,40 +14,58 @@
  *
  *****************************************************************************/
 
-#ifndef Categoria_H_
-#define Categoria_H_
+#ifndef _CATEGORIA_H_
+#define _CATEGORIA_H_
 
 #include <iostream>
 #include <string>
-using namespace std;
 
-using namespace col;
+#include "Area.h"
+#include "PlanoBeneficio.h"
+#include "PlanoCarreira.h"
 
-class Categoria {
+namespace dmd
+{
+
+class Categoria
+{
 private:
-	/* description of Category */
-	string 	description,
-			name;
-	double	baseSalary;
+    std::string description;
+    std::string name;
 
-	int 	maxEmployee;
+    Salary baseSalary;
 
-	Area*	area;
-	PlanoBeneficio*	planoBeneficio;
-	PlanoCarreira*	planoCarreira;
+    unsigned int maxEmployees;
+
+    dmd::Area area;
+    dmd::PlanoBeneficio planoBeneficio;
+    dmd::PlanoCarreira planoCarreira;
 
 public:
-	/**   Constructor section */
-	/* default funcionalaty */
-			Categoria();
-	 /* full  funcionalaty  */
-			Categoria(const description& name);
-	 /* copy  Constructor of the employee */
-			Categoria(const Categoria&);
-	 /* delete employee */
-			~Categoria();
- */
-	/*	 *   end Constructor section	 */
+    typedef unsigned double Salary;
+
+    Categoria();
+
+    // GETTERS
+    const std::string& getDescription() const { return description; }
+    const std::string& getName() const { return name; }
+    Salary getBaseSalary() const { return baseSalary; }
+    unsigned int getMaxEmployees() const { return maxEmployees; }
+    const dmd::Area& getArea() const { return area; }
+    const dmd::PlanoBeneficio& getPlanoBeneficio() const { return planoBeneficio; }
+    const dmd::PlanoCarreira& getPlanoCarreira() const { return planoCarreira; }
+
+    // SETTERS
+    void setDescription(const std::string &desc) { description = desc; }
+    void setName(const std::string &_name) { name = _name; }
+    void setBaseSalary(Salary salary) { baseSalary = salary; }
+    void setMaxEmployees(unsigned int max) { maxEmployees = max; }
+    void setArea(const dmd::Area &_area) { area = _area; }
+    void setPlanoBeneficio(const dmd::PlanoBeneficio &plano) { planoBeneficio = plano; }
+    void setPlanoCarreira(const dmd::PlanoCarreira &plano) { planoCarreira = plano; }
+
 };
 
-#endif
+}
+
+#endif /* _CATEGORIA_H */

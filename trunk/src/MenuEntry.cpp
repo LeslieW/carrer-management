@@ -14,6 +14,8 @@ using std::list;
 using boost::function;
 using boost::bind;
 
+
+
 using ui::MenuEntry;
 
 MenuEntry::MenuEntry(const string &_name, const Callback &firstCallBack)
@@ -21,6 +23,22 @@ MenuEntry::MenuEntry(const string &_name, const Callback &firstCallBack)
 {
 	callbacks.push_back(firstCallBack);
 }
+
+MenuEntry::MenuEntry(const MenuEntry& p)
+{
+	name=(p.name);
+	callbacks=(p.callbacks);
+	menuKey=(p.menuKey);
+}
+
+MenuEntry::~MenuEntry()
+{
+}
+
+MenuEntry *MenuEntry::clone() const{
+	return new MenuEntry(*this);
+}
+
 
 void MenuEntry::call()
 {
@@ -34,3 +52,4 @@ void MenuEntry::pushCallback(const Callback &callback)
 {
 	callbacks.push_back(callback);
 }
+

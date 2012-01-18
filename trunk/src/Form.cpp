@@ -49,9 +49,9 @@ void Form::pushEntry(const FormEntry &entry)
 	entries.push_back(entry);
 }
 
-vector<const string&> Form::getValues()
+vector< std::string> Form::getValues()
 {
-	vector<const string&> ret(entries.size());
+	vector< std::string> ret(entries.size());
 	int i = 0;
 
 	for (list<FormEntry>::iterator itr = entries.begin(); itr != entries.end(); itr++, i++)
@@ -61,4 +61,5 @@ vector<const string&> Form::getValues()
 	}
 
 	return ret;
+
 }

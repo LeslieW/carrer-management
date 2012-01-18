@@ -33,7 +33,8 @@ private:
 	void obtainInput();
 
 public:
-	FormEntry(const std::string &_entry, bool _revalidate = false);
+
+	FormEntry(const std::string &_entry, bool _revalidate);
 
 	/**
 	 * Writes to STDOUT. If revalidation is active, runs the

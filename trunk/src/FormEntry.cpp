@@ -9,7 +9,7 @@ using std::endl;
 using std::cin;
 using ui::FormEntry;
 
-FormEntry::FormEntry(const string &_entry, bool _revalidate = false)
+FormEntry::FormEntry(const string &_entry, bool _revalidate)
 	: entry(_entry), value(""), revalidate(_revalidate)
 {}
 
@@ -21,7 +21,7 @@ void FormEntry::obtainInput()
 
 bool FormEntry::write()
 {
-	bool b = revalidate;
+	//bool b = revalidate;
 
 	obtainInput();
 

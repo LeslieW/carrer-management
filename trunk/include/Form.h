@@ -65,7 +65,7 @@ public:
 	 *
 	 * @return the vector with the values the form read
 	 */
-	vector<const string&> getValues();
+	vector<std::string> getValues();
 };
 
 }

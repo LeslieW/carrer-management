@@ -53,7 +53,13 @@ public:
     void setCategoria(const dmd::Categoria &cat) { categoria = cat; }
 };
 
-typedef std::pair<dmd::Progressao, dmd::ColaboradorId> PropostaProgressao;
+typedef struct _PropostaProgressao
+{
+    int omfg;
+    dmd::Progressao prog;
+    dmd::Colaborador colabId;
+    int estado;
+} PropostaProgressao;
 
 }
 

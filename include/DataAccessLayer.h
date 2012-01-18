@@ -169,8 +169,6 @@ public:
      */
     void approveProgressao(const dmd::Progressao &progressao);
 
-    void list
-
     /**
      * Imports an employee CSV data file into the DB.
      *

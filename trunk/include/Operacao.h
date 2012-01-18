@@ -25,14 +25,17 @@ namespace dmd
 class Operacao
 {
 private:
+    int opId;
     std::string description;
 
-    Operacao(const std::string &desc = "") :
-            description(desc) {}
+    Operacao(int _opId = 0, const std::string &desc = "") :
+            opId(_opId), description(desc) {}
 
     const std::string& getDescription() const { return description; }
+    int getOpId() const { return opId; }
 
     void setDescription(const std::string& desc) { description = desc; }
+    void setOpId(int _opId) { opId = _opId; }
 };
 
 }

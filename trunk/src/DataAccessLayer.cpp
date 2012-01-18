@@ -110,8 +110,7 @@ list<Operacao> DataAccessLayer::getAllowedOperacoes(ColaboradorId id)
 {
     list<Operacao> ret;
 
-    string byGroup = "SELECT op.DESCRICAO FROM OPERACAO op, ACESSO ac, GRUPO g " \
-        "WHERE (g.ID_COLABORADOR = :idColab AND ac.ID_GRUPO = g.ID_GRUPO AND ac.ID_OP = op.ID_OP) OR (ac.ID_COLABORADOR = :idColab AND op.ID_OP = ac.ID_OP)";
+    string byGroup = "SELECT DISTINCT op.DESCRICAO FROM OPERACAO op, ACESSO ac, GRUPO g, COLABORADOR col WHERE (ac.ID_COLABORADOR = :idColab) OR (col.ID_COLABORADOR = :idColab AND ac.ID_GRUPO = col.ID_GRUPO)";
 
     Statement *statement = connection->createStatement(byGroup);
 
@@ -242,7 +241,7 @@ MyDate toDate(oracle::occi::Date oracleDate)
 
 list<PropostaProgressao> getPropostasProgressao(ColaboradorId id = -1)
 {
-    string query = "SELECT ID_PROG, ID_COLABORADOR FROM PROPOSTA_PROGRESSAO" + (id > 0) ? "WHERE ID_COLABORADOR = :idColab" : "";
+    string query = "SELECT ID_PROG, ID_COLABORADOR, ESTADO FROM PROPOSTA_PROGRESSAO" + (id > 0) ? "WHERE ID_COLABORADOR = :idColab" : "";
 
     Statement *statement = connection->createStatement(query);
 
@@ -256,8 +255,9 @@ list<PropostaProgressao> getPropostasProgressao(ColaboradorId id = -1)
 
     while (res->next())
     {
-        p.first = res->getNumber(1);
-        p.second = res->getNumber(2);
+        p.prog = getProgressao(res->getNumber(1));
+        p.colabId = res->getNumber(2);
+        p.estado = res->getNumber(3);
         l.push_back(p);
     }
 
@@ -325,4 +325,38 @@ PlanoCarreira* DataAccessLayer::getCareer(ColaboradorId id)
 }
 */
 
+void DataAccessLayer::connect(const std::string &user = DEF_USER, const std::string &pass = DEF_PASS, const std::string &conn = DEF_CONN)
+{
+    environment = Environment::createEnvironment(Environment::DEFAULT);
+    connection = environment->createConnection(user, pass, conn);
+}
 
+void DataAccessLayer::submitPropostaProgressao(const dmd::PropostaProgressao &proposta)
+{
+    string query = "INSERT INTO PROPOSTA_PROGRESSAO VALUES (:idProp, :idProg, :idColab, :estado)";
+
+
+    Statement *statement = connection->createStatement(query);
+    statement->setNumber(1, Number(proposta.omfg))
+    statement->setNumber(2, Number(proposta.prog));
+    statement->setNumber(3, Number(proposta.colabId));
+    statement->setNumber(4, Number(proposta.estado));
+
+    try
+    {
+        statement->executeUpdate();
+    }
+    catch (SQLException ex)
+    {
+        connection->terminateStatement(statement);
+
+        throw DataAccessException(ex.getMessage(), ex.getErrorCode());
+    }
+
+    connection->terminateStatement(statement);
+}
+
+void DataAccessLayer::submitPropostaPlanoBeneficios(const PropostaAlteracaoBeneficio &plano)
+{
+    string query = "INSERT INTO PROPOSTA_ALTERACAO_BENEFICIO VALUES (:crapId, :"
+}

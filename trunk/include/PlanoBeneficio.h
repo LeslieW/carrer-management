@@ -43,6 +43,17 @@ private:
     void addBeneficio(const dmd::Beneficio &beneficio) { beneficios.push_back(beneficio); }
 };
 
+typedef struct _PropostaAlteracaoBeneficio
+{
+    int omfg; // id
+    std::string nome;
+    double custo;
+    int tempo;
+    bool isParcial;
+    int idBeneficio;
+    int idColab;
+} PropostaAlteracaoBeneficio;
+
 }
 
 #endif /* _PLANOBENEFICIO_H */

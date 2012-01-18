@@ -8,6 +8,7 @@ include/FormEntry.h
 include/includes.h
 include/MenuEntry.h
 include/version.h
+include/PriorityQueue.h
 src/app.c
 src/Colaborador.cpp
 src/conv.c
@@ -29,3 +30,4 @@ include/Operacao.h
 src/Operacao.cpp
 include/Progressao.h
 src/Progressao.cpp
+src/PriorityQueue.cpp

@@ -41,6 +41,8 @@ protected:
     int phone;			/* phone number of the employee */
     double salary;		/* Salary of the employee */
 
+    int categoria;
+
 public:
 
     Colaborador();
@@ -67,6 +69,7 @@ public:
     int getNIF() const { return this->nif; }
     int getPhone() const { return this->phone; }
     double getSalary() const { return this->salary; }
+    int getCategoria() const { return categoria; }
 
     // SETTERS
     void setId(ColaboradorId id);
@@ -77,6 +80,7 @@ public:
     void setNIF(int);
     void setPhone(int);
     void setSalary(double);
+    void setCategoria(int);
 
 	Colaborador& operator =(const Colaborador&);
 

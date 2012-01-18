@@ -39,13 +39,14 @@ private:
 	typedef function<void ()> Callback;
 
 	list<Callback> callbacks;			/* list of callbacks to execute */
-	string name;						/* name of the menu entry */
 	char menuKey;
+	string name;						/* name of the menu entry */
+
 
 public:
-	MenuEntry(const string &_name, const Callback &firstCallBack);
+	MenuEntry(char _menuKey, const string &_name, const Callback &firstCallBack);
 
-	MenuEntry(const MenuEntry&);
+	MenuEntry(const MenuEntry& p);
 
 	~MenuEntry();
 
@@ -79,8 +80,6 @@ public:
 	 * Returns the menu key to the entry
 	 */
 	const char& getMenuKey() const { return menuKey; }
-
-
 
 };
 

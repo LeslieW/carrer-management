@@ -18,17 +18,20 @@ using boost::bind;
 
 using ui::MenuEntry;
 
-MenuEntry::MenuEntry(const string &_name, const Callback &firstCallBack)
-	: name(_name)
+MenuEntry::MenuEntry(char _menuKey, const string &_name, const Callback &firstCallBack)
+	: menuKey(_menuKey),
+	  name(_name)
 {
 	callbacks.push_back(firstCallBack);
 }
 
+
 MenuEntry::MenuEntry(const MenuEntry& p)
 {
+	menuKey=(p.menuKey);
 	name=(p.name);
 	callbacks=(p.callbacks);
-	menuKey=(p.menuKey);
+
 }
 
 MenuEntry::~MenuEntry()

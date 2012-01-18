@@ -1,5 +1,7 @@
-#include <iostream>
 #include <string>
+#include <string>
+#include <sstream>
+#include <iostream>
 #include <vector>
 #include <list>
 
@@ -10,6 +12,7 @@
 #include "MenuEntry.h"
 
 using std::string;
+using std::stringstream;
 using std::cout;
 using std::cin;
 using std::endl;
@@ -20,70 +23,77 @@ using boost::bind;
 using ui::Menu;
 using ui::MenuEntry;
 
-Menu::Menu()
-{
+Menu::Menu(const std::string& _header, const vector<const MenuEntry*>& _options) :
+		header(_header), options(_options) {
 }
 
-Menu::Menu(const std::string& _header, const list<MenuEntry*>& _options)
-{
-	header=_header;
-	for(list<MenuEntry*>::const_iterator itr=_options.begin();
-			itr!=_options.end(); itr++,options.push_front(*itr));
+Menu::Menu(const Menu& p) :
+		header(p.header), options(p.options) {
 }
 
-Menu::Menu(const Menu& p)
-	:header(p.header),
-	 options(p.options)
-{
-
-	}
-
-Menu::~Menu()
-{
+Menu::~Menu() {
 }
 
-Menu* Menu::clone() const{
+Menu* Menu::clone() const {
 	return new Menu(*this);
 }
 
 void Menu::draw() {
 	char op;
 	char key;
-	do {
-		//draw menu
-		cout << "  ---- MENU ----" << endl;
-		cout << header << endl;
-		for (list<const MenuEntry*>::iterator itr = options.begin();itr != options.end(); itr++) {
-			MenuEntry entry = *(*itr);
-			key = entry.getMenuKey();
-			cout << key << entry.getName() << endl;
-		}
-		cout << "0 - Voltar" << endl;
-		cout << endl << "Opcção: ";
+	bool repeat;
 
+	//generating menu
+	stringstream out;
+	out << "  ------ MENU ------" << endl;
+	out << "  -      " << header << endl;
+	int size = options.size();
+	for (int i = 0; i < size; i++) {
+		MenuEntry entry = *options[i];
+		key = entry.getMenuKey();
+		out << "-      " << key << "  -    " << entry.getName() << endl;
+	}
+	out << "  ----      ----" << endl;
+	out << "  -    0 - Voltar" << endl;
+	out << "  --------------" << endl;
+	out << endl << "Opcção: ";
+	do {
+		//print menu
+		cout << out.str();
 		cin >> op;
 
 		//option validation
+		repeat = true;
 		if (op == '0')
 			return;
-		if (op >= 'A' && op <= key) {
-			char pos = 'A';
-			list<const MenuEntry*>::iterator itr = options.begin();
-			do {
-				//apilication start
-				if (pos == op) {
-					MenuEntry entry = **itr;
-					entry.call();
-					return;
-				}
-				itr++;
-			} while (true); //pos != op
+		if (op >= 'A')
+		{
+			if (op <= key)
+			{
+				char pos = 'A';
+				int i = 0;
+				do {
+					//apilication start
+					if (pos+i == op) {
+						MenuEntry entry = *options[i];
+						entry.call();
+						break;
+					}
 
+					i++;
+				} while (true); //pos != op
+
+			}else{
+				cout << endl << endl << endl << endl << endl << endl
+				<< "  --- Invalid Option (" << op << ")" << endl
+				<< "  --- Value is higher then expected"<<endl<<endl;
+			}
 		} else {
 			cout << endl << endl << endl << endl << endl << endl
-					<< "  --- Opcao (" << op << ")Invalida ---" << endl;
+			<< "  --- Invalid Option (" << op << ")" << endl
+			<< "  --- Value is smaller then expected"<<endl<<endl;
 		}
 
-	} while (true);
+	} while (repeat);
 
 }

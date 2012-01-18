@@ -27,6 +27,8 @@
 namespace dmd
 {
 
+typedef unsigned double Salary;
+
 class Categoria
 {
 private:
@@ -42,8 +44,6 @@ private:
     dmd::PlanoCarreira planoCarreira;
 
 public:
-    typedef unsigned double Salary;
-
     Categoria();
 
     // GETTERS

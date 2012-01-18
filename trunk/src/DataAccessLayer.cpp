@@ -8,6 +8,8 @@
 
 #include <boost/graph/adjacency_list.hpp>
 
+#include "includes.h"
+
 using std::string;
 using std::list;
 
@@ -49,19 +51,20 @@ Colaborador DataAccessLayer::getColaborador(ColaboradorId id)
 
     statement->setNumber(1, Number(id));
     ResultSet *res = statement->executeQuery();
+    res->next();
 
     Colaborador colab;
 
     try
     {
-        colab.setId(res->getNumber(1)());
+        colab.setId(res->getNumber(1));
         colab.setName(res->getString(2));
         colab.setAdress(res->getString(3));
-        colab.setPhone(res->getNumber(4)());
-        colab.setNIF(res->getNumber(5)());
+        colab.setPhone(res->getNumber(4));
+        colab.setNIF(res->getNumber(5));
         colab.setEmail(res->getString(6));
         colab.setPassword(res->getString(7));
-        colab.setSalario(res->getNumber(8)());
+        colab.setSalario(res->getNumber(8));
     }
     catch (SQLException ex)
     {

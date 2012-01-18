@@ -7,7 +7,7 @@
 cc = gcc
 CC = g++
 CFLAGS = -Wall -g
-LDFLAGS = -lociei
+LDFLAGS = -lclntsh -locci
 
 EXE = cm
 

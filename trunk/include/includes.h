@@ -14,6 +14,11 @@
 #define _INCLUDES_H
 
 #include "Colaborador.h"
-#include "RH.h"
+#include "Area.h"
+#include "Categoria.h"
+#include "Operacao.h"
+#include "PlanoBeneficio.h"
+#include "PlanoCarreira.h"
+#include "Progressao.h"
 
 #endif /* _INCLUDES_H */

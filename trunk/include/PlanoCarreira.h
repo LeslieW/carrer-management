@@ -26,6 +26,8 @@ namespace dmd
 {
 
 typedef boost::adjacency_list <> CareerGraph;
+typedef boost::graph_traits< boost::adjacency_list <> >::vertex_iterator VertexIterator;
+typedef boost::graph_traits< boost::adjacency_list <> >::adjacency_iterator AdjacencyIterator;
 
 class PlanoCarreira
 {
@@ -35,7 +37,7 @@ private:
 
 public:
     PlanoCarreira(const std::string &desc="") :
-            description(desc) {}
+            description(desc) { careerGraph = new boost::adjacency_list<> (); }
 
     ~PlanoCarreira();
 

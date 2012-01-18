@@ -22,12 +22,13 @@
 #include <string>
 #include <list>
 #include <exception>
+#include <utility>
 
 #include <occi.h>
 
 #include <boost/graph/adjacency_list.hpp>
 
-#include "Colaborador.h"
+#include "includes.h"
 
 namespace core
 {
@@ -106,7 +107,7 @@ public:
      * @returns the PlanoBeneficios for a Colaborador
      * @throws a DataAccessException if the colaborador can't be found
      */
-    dmd::PlanoBeneficios getBeneficios(dmd::ColaboradorId id);
+    dmd::PlanoBeneficio getBeneficios(dmd::ColaboradorId id);
 
     /**
      * Submits a PropostaProgressao to the system, for avaliation
@@ -125,7 +126,7 @@ public:
      * @param plano the PlanoBeneficios to submit
      * @throws a DataAccessException if it's rejected by the system
      */
-    void submitPropostaPlanoBeneficios(const dmd::PlanoBeneficios &plano);
+    void submitPropostaPlanoBeneficios(const dmd::PlanoBeneficio &plano);
 
     /**
      * Obtains a list of Categoria for a given Colaborador.
@@ -150,7 +151,7 @@ public:
      * @param id the ID of the Colaborador
      * @returns the graph representing the career he has taken
      */
-    CareerGraph getCareer(dmd::ColaboradorId id);
+    dmd::PlanoCarreira* getCareer(dmd::ColaboradorId id);
 
     /**
      * Allows an authority entity to approve a Progressao.

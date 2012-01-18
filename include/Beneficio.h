@@ -20,6 +20,8 @@
 #include <string>
 #include <boost/date_time/gregorian/gregorian.hpp>
 
+#include "Categoria.h"
+
 namespace dmd
 {
 
@@ -28,19 +30,25 @@ typedef boost::gregorian::date MyDate;
 class Beneficio
 {
 private:
-    MyDate dataInicio;
-    MyDate dataFim;
+    std::string name;
+    unsigned int tempoFidelizacao;
+    bool isParcial;
+    dmd::Salary cost;
 
     Beneficio();
 
-    Beneficio(const MyDate &di, const MyDate &df) :
-            dataInicio(di), dataFim(df) {}
+    Beneficio(const std::string &_name, unsigned int _tempoFidelizacao,
+              bool _isParcial = false, dmd::Salary _cost) :
+        name(_name), tempoFidelizacao(_tempoFidelizacao), isParcial(_isParcial), cost(_cost) {}
 
-    const MyDate& getDataInicio() const { return dataInicio; }
-    const MyDate& getDataFim() const { return dataFim; }
+    const std::string& getName() const { return name; }
+    unsigned int getTempoFidelizacao() const { return tempoFidelizacao; }
+    bool isParcial() const { return isParcial; }
 
-    void setDataInicio(const MyDate& di) { dataInicio = di; }
-    void setDataFim(const MyDate& df) { dataFim = df; }
+    void setName(const std::string &_name) { name = _name; }
+    void setTempoFidelizacao(unsigned int _tempoFidelizacao) { tempoFidelizacao = _tempoFidelizacao; }
+    void isParcial(bool b) { isParcial = b; }
+    void setCost(dmd::Salary _cost) { cost = _cost; }
 };
 
 }

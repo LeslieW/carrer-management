@@ -98,6 +98,8 @@ public:
 	void write(ostream& out) const;
 };
 
+typedef Colaborador PropostaDadosPessoais;
+
 }
 
 /**

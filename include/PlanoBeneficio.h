@@ -25,7 +25,7 @@
 namespace dmd
 {
 
-class PlanoBenficio
+class PlanoBeneficio
 {
 private:
     std::list<dmd::Beneficio> beneficios;

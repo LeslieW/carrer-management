@@ -23,6 +23,8 @@ using oracle::occi::SQLException;
 using boost::adjacency_list;
 
 using dmd::Colaborador;
+using dmd::ColaboradorId
+using dmd::Operacao;
 using core::DataAccessLayer;
 using core::DataAccessException;
 
@@ -80,5 +82,35 @@ Colaborador DataAccessLayer::getColaborador(ColaboradorId id)
     connection->terminateStatement(statement);
 
     return colab;
+
+
 }
 
+list<Operacao> getAllowedOperacoes(ColaboradorId id)
+{
+    list<Operacao> ret;
+
+    // first we get the allowed operations by group
+    string byGroup = "SELECT op.DESCRICAO FROM OPERACAO op, ACESSO ac, GRUPO g " \
+        "WHERE g.ID_COLABORADOR = :idColab AND ac.ID_GRUPO = g.ID_GRUPO AND ac.ID_OP = op.ID_OP";
+
+    Statement *statement = connection->createStatement(byGroup);
+
+    statement->setNumber(1, Number(id));
+    ResultSet *res = statement->executeQuery();
+
+    while (res->next())
+    {
+        try
+        {
+            ret.push_back(res->getNumber(1));
+        }
+        catch (SQLException ex)
+        {
+            statement->closeResultSet(res);
+            connection->terminateStatement(statement);
+
+            throw DataAccessException(ex.getMessage(), ex.getErrorCode());
+        }
+    }
+}

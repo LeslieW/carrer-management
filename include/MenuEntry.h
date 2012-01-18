@@ -38,11 +38,24 @@ class MenuEntry
 private:
 	typedef function<void ()> Callback;
 
-	list<Callback> callbacks;	/* list of callbacks to execute */
+	list<Callback> callbacks;			/* list of callbacks to execute */
 	string name;						/* name of the menu entry */
+	char menuKey;
 
 public:
 	MenuEntry(const string &_name, const Callback &firstCallBack);
+
+	MenuEntry(const MenuEntry&);
+
+	~MenuEntry();
+
+	/**
+	 * Returns a perfect copy of the MenuEntry.
+	 *
+	 * @return a copy of MenuEntry
+	 */
+    MenuEntry *clone() const;
+
 
 	/**
 	 * Executes all the callbacks.
@@ -55,6 +68,20 @@ public:
 	 * @param callback the callback to push
 	 */
 	void pushCallback(const Callback &callback);
+
+
+	/*
+	 * Returns the name of menu entry
+	 */
+	const std::string& getName() const { return name; }
+
+	/*
+	 * Returns the menu key to the entry
+	 */
+	const char& getMenuKey() const { return menuKey; }
+
+
+
 };
 
 }

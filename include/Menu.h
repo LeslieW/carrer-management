@@ -1,8 +1,8 @@
 /******************************************************************************
  *
- *	MenuEntry.h
+ *	Menu.h
  *
- *	Encapsulates a menu entry.
+ *	Encapsulates all menu entry.
  *
  *	Created at:
  *	2012-01-17
@@ -22,6 +22,7 @@
 
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
+#include "MenuEntry.h"
 
 using std::string;
 using std::cout;
@@ -30,25 +31,41 @@ using std::list;
 using boost::function;
 using boost::bind;
 
+using ui::MenuEntry;
 namespace ui
 {
 
 class Menu
 {
 private:
-	list<const MenuEntry&> options;			/* list of all menu options */
-	string header;							/* small descripion of the menu */
+	std::string header;							/* small descripion of the menu */
+	list<const MenuEntry*> options;			/* list of all menu options */
+
 
 
 public:
+	Menu();
 
-	Menu(const string& _header, const list<MenuEntry&> _options);	/* Default constroctor */
+	Menu(const std::string& _header, const list<MenuEntry*>& _options);	/* Default constroctor */
 
-	void draw();							/* prints all menu */
+	Menu(const Menu& p);
 
+	~Menu();
 
+	/**
+	 * Returns a perfect copy of the Menu.
+	 *
+	 * @return a copy of Menu
+	 */
+	Menu* clone() const;
 
+	/*
+	 *  prints all menu
+	 * */
+	void draw();
 
 
 };
 }
+
+#endif /* _MENU_H_ */

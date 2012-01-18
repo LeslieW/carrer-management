@@ -95,11 +95,17 @@ void Colaborador::setSalary(double salary)
 	this->salary = salary;
 }
 
+void Colaborador::setCategoria(int cat)
+{
+        this->categoria = cat;
+}
 
 Colaborador& Colaborador::operator =(const Colaborador& var)
 {
     if (this != &var)
     {
+        this->id = var.id;
+        this->categoria = var.categoria;
     	this->name = var.name;
     	this->salary = var.salary;
     	this->address = var.address;

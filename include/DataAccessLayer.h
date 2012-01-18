@@ -29,6 +29,7 @@
 #include <boost/graph/adjacency_list.hpp>
 
 #include "includes.h"
+#include "PriorityQueue.h"
 
 namespace core
 {
@@ -61,6 +62,8 @@ private:
     oracle::occi::Environment *environment;
     oracle::occi::Connection *connection;
 
+    core::PriorityQueue requests;
+
     void connect(const std::string &user = DEF_USER,
                 const std::string &pass = DEF_PASS,
                 const std::string &conn = DEF_CONN);
@@ -82,6 +85,10 @@ public:
      * found
      */
     dmd::Colaborador getColaborador(dmd::ColaboradorId id);
+
+    dmd::Categoria getCategoria(int idCategoria);
+
+    dmd::Progressao getProgressao(int idProg);
 
     /**
      * Returns a list of Operacao allowed for a given Colaborador.
@@ -146,7 +153,8 @@ public:
     void submitPropostaDadosPessoais(const dmd::PropostaDadosPessoais &proposta);
 
     /**
-     * Get the career (graph form) for a Colaborador.
+     * Get the career (graph form) for a Colaborador (you
+     * gain ownership of the object).
      *
      * @param id the ID of the Colaborador
      * @returns the graph representing the career he has taken
@@ -160,6 +168,8 @@ public:
      * @throws DataAccessException if the progressao isn't found
      */
     void approveProgressao(const dmd::Progressao &progressao);
+
+    void list
 
     /**
      * Imports an employee CSV data file into the DB.

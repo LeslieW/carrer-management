@@ -39,9 +39,9 @@ private:
 
     unsigned int maxEmployees;
 
-    dmd::Area area;
-    dmd::PlanoBeneficio planoBeneficio;
-    dmd::PlanoCarreira planoCarreira;
+    std::string area;
+    int idPlanoCarreira;
+    int idPlanoBeneficios;
 
 public:
     Categoria();
@@ -51,18 +51,18 @@ public:
     const std::string& getName() const { return name; }
     Salary getBaseSalary() const { return baseSalary; }
     unsigned int getMaxEmployees() const { return maxEmployees; }
-    const dmd::Area& getArea() const { return area; }
-    const dmd::PlanoBeneficio& getPlanoBeneficio() const { return planoBeneficio; }
-    const dmd::PlanoCarreira& getPlanoCarreira() const { return planoCarreira; }
+    const std::string& getArea() const { return area; }
+    int getPlanoBeneficio() const { return planoBeneficio; }
+    int getPlanoCarreira() const { return planoCarreira; }
 
     // SETTERS
     void setDescription(const std::string &desc) { description = desc; }
     void setName(const std::string &_name) { name = _name; }
     void setBaseSalary(Salary salary) { baseSalary = salary; }
     void setMaxEmployees(unsigned int max) { maxEmployees = max; }
-    void setArea(const dmd::Area &_area) { area = _area; }
-    void setPlanoBeneficio(const dmd::PlanoBeneficio &plano) { planoBeneficio = plano; }
-    void setPlanoCarreira(const dmd::PlanoCarreira &plano) { planoCarreira = plano; }
+    void setArea(const std::string &_area) { area = _area; }
+    void setPlanoBeneficio(int plano) { planoBeneficio = plano; }
+    void setPlanoCarreira(int plano) { planoCarreira = plano; }
 
 };
 

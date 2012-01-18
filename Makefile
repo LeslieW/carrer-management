@@ -47,6 +47,9 @@ $(EXE): $(OBJS)
 
 $(OBJS): $(INC_PATH)includes.h
 
+run:  ${EXE}
+	./${EXE}
+
 clean:
 	rm -f $(BIN_PATH)*
 	rm -f $(OBJ_PATH)*

@@ -241,7 +241,7 @@ MyDate toDate(oracle::occi::Date oracleDate)
 
 list<PropostaProgressao> getPropostasProgressao(ColaboradorId id = -1)
 {
-    string query = "SELECT ID_PROG, ID_COLABORADOR, ESTADO FROM PROPOSTA_PROGRESSAO" + (id > 0) ? "WHERE ID_COLABORADOR = :idColab" : "";
+    string query = "SELECT ID_PROPOSTA_PROG, ID_PROG, ID_COLABORADOR, ESTADO FROM PROPOSTA_PROGRESSAO" + (id > 0) ? "WHERE ID_COLABORADOR = :idColab" : "";
 
     Statement *statement = connection->createStatement(query);
 
@@ -255,9 +255,10 @@ list<PropostaProgressao> getPropostasProgressao(ColaboradorId id = -1)
 
     while (res->next())
     {
-        p.prog = getProgressao(res->getNumber(1));
-        p.colabId = res->getNumber(2);
-        p.estado = res->getNumber(3);
+        p.omfg = res->getNumber(1);
+        p.prog = getProgressao(res->getNumber(2));
+        p.colabId = res->getNumber(3);
+        p.estado = res->getNumber(4);
         l.push_back(p);
     }
 
@@ -337,7 +338,7 @@ void DataAccessLayer::submitPropostaProgressao(const dmd::PropostaProgressao &pr
 
 
     Statement *statement = connection->createStatement(query);
-    statement->setNumber(1, Number(proposta.omfg))
+    statement->setNumber(1, Number(proposta.omfg));
     statement->setNumber(2, Number(proposta.prog));
     statement->setNumber(3, Number(proposta.colabId));
     statement->setNumber(4, Number(proposta.estado));
@@ -358,5 +359,49 @@ void DataAccessLayer::submitPropostaProgressao(const dmd::PropostaProgressao &pr
 
 void DataAccessLayer::submitPropostaPlanoBeneficios(const PropostaAlteracaoBeneficio &plano)
 {
-    string query = "INSERT INTO PROPOSTA_ALTERACAO_BENEFICIO VALUES (:crapId, :"
+    string query = "INSERT INTO PROPOSTA_ALTERACAO_BENEFICIO VALUES (:crapId, :nome, :custo, :tempo, :regime, :idBen, :idCol, :estado)";
+
+    Statement *statement = connection->createStatement(query);
+    statement->setNumber(1, plano.omfg);
+    statement->setNumber(2, plano.nome);
+    statement->setNumber(3, plano.custo);
+    statement->setNumber(4, plano.tempo);
+    statement->setNumber(5, plano.isParcial);
+    statement->setNumber(6, plano.idBeneficio);
+    statement->setNumber(7, plano.idColab);
+    statement->setNumber(8, plano.state);
+
+    try
+    {
+        statement->executeUpdate();
+    }
+    catch (SQLException ex)
+    {
+        connection->terminateStatement(statement);
+
+        throw DataAccessException(ex.getMessage(), ex.getErrorCode());
+    }
+
+    connection->terminateStatement(statement);
+}
+
+void DataAccessLayer::approveProgressao(const dmd::PropostaProgressao &progressao)
+{
+    string query = "UPDATE PROPOSTA_PROGRESSAO SET ESTADO = 2 WHERE ID_PROG = :idProg";
+
+    Statement *statement = connection->createStatement(query);
+    statement->setNumber(1, progressao.prog);
+
+    try
+    {
+        statement->executeUpdate();
+    }
+    catch (SQLException ex)
+    {
+        connection->terminateStatement(statement);
+
+        throw DataAccessException(ex.getMessage(), ex.getErrorCode());
+    }
+
+    connection->terminateStatement(statement);
 }

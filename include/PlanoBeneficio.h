@@ -52,6 +52,7 @@ typedef struct _PropostaAlteracaoBeneficio
     bool isParcial;
     int idBeneficio;
     int idColab;
+    int state;
 } PropostaAlteracaoBeneficio;
 
 }

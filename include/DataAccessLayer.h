@@ -167,7 +167,7 @@ public:
      * @param progressao the progressao to approve
      * @throws DataAccessException if the progressao isn't found
      */
-    void approveProgressao(const dmd::Progressao &progressao);
+    void approveProgressao(const dmd::PropostaProgressao &progressao);
 
     /**
      * Imports an employee CSV data file into the DB.

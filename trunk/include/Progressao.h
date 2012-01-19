@@ -37,6 +37,8 @@ private:
     dmd::Colaborador colaborador;
     dmd::Categoria categoria;
 
+    int idProgressao;
+
 public:
     Progressao();
 
@@ -45,6 +47,7 @@ public:
     dmd::Salary getSalarioActual() const { return salarioNovo; }
     const dmd::Colaborador& getColaborador() const { return colaborador; }
     const dmd::Categoria& getCategoria() const { return categoria; }
+    int getIdProgressao() { return idProgressao; }
 
     void setDataProgressao(const dmd::MyDate &data) { dataProgressao = data; }
     void setSalarioAnterior(dmd::Salary s) { salarioAnterior = s; }
@@ -52,11 +55,12 @@ public:
     void setColaborador(const dmd::Colaborador &colab) { colaborador = colab; }
     void setCategoria(const dmd::Categoria &cat) { categoria = cat; }
 };
+void setIdProgressao(int idProg) { idProgressao = idProg; }
 
 typedef struct _PropostaProgressao
 {
-    int omfg;
-    dmd::Progressao prog;
+    int omfg; // pk proposta_progressaao
+    int prog; // id_prog
     dmd::Colaborador colabId;
     int estado;
 } PropostaProgressao;
